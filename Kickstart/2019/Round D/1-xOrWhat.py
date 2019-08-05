@@ -71,58 +71,43 @@ def  countSetBitsAndReturnIfEven(n):
 #         # ans += "{} ".format(xor_even_max)
 #     print("Case #{}: {}".format(testcase, ans[:len(ans)]))
 
-def generatePascalTriangleRow(n):
-    pascalRow = [1]
-    element = 1
-    # if n%2 == 0:
-    rangeToCalculate = n//2
-    # else:
-
-    for i in range(0, rangeToCalculate):
-        element *= (n-i)/(i+1)
-        pascalRow.append(int(element))
-    if n % 2 != 0:
-        return pascalRow + pascalRow[:-(len(pascalRow)):-1]
-    else:
-        toBeReversed = pascalRow[-len(pascalRow)+1:-1]
-        return pascalRow + toBeReversed[::-1]
+def combsForChecking(A, data, start, end, index, r):
+    if (index == r): 
+        tempData = []
+        for j in range(r): 
+            tempData.append(data[j])
+        # print(tempData)
+        yesOrNo = countSetBitsAndReturnIfEven(xor_sum(tempData, r))
+        # print("yesOrNo:", yesOrNo)
+        if yesOrNo == -1:
+            return False
+        else:
+            return True
+    
+    i = start  
+    while i <= end and end - i + 1 >= r - index: 
+        data[index] = A[i]
+        return combsForChecking(A, data, i + 1, end, index + 1, r)
+        i += 1
 
 T = int(input())
 for testcase in range(1, T+1):
     N, Q = map(int, input().split())
     A = list(map(int, input().split()))
     ans = ''
-    pascalRow = generatePascalTriangleRow(N)
-    # print(pascalRow)
     for modfication in range(0, Q):
         Pi, Vi = map(int, input().split())
         A[Pi] = Vi
-        tempN = N
         breakFlag = 0
-        for numsToTakeOut in range(len(pascalRow)):
-            if numsToTakeOut == 0:
-                evenOrNot = countSetBitsAndReturnIfEven(xor_sum(A, N))
-                if evenOrNot is not -1:
-                    ans = "{} ".format(N)
-                    # breakFlag = 1
-                    break
-                else:
-                    tempN -= 1
-            else:
-                for possibility in range(0, pascalRow[numsToTakeOut]):
-                    
+        for numsToTakeOut in range(N):
+            r = N - numsToTakeOut
+            # print("r:", r)
+            data = [0] * r
+            possibleOrNot = combsForChecking(A, data, 0, N-1, 0, r)
+            # print("possibleOrNot:", possibleOrNot)
+            if possibleOrNot:
+                ans += "{} ".format(r)
+                break            
+            
 
-            if breakFlag == 1:
-                break
-        # numberOfWindows, flag = 1, 0
-        # for windowSize in range(N, 0, -1):
-        #     for window in range(0, numberOfWindows):
-        #         if countSetBitsAndReturnIfEven(xor_sum(A[window:windowSize+window], windowSize)) is not -1:
-        #             ans += "{} ".format(windowSize)
-        #             flag = 1
-        #             break
-        #     if flag == 0:
-        #         numberOfWindows += 1
-        #     else:
-        #         break
     print("Case #{}: {}".format(testcase, ans[:len(ans)]))
