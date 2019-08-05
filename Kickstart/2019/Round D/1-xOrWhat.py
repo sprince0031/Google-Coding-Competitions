@@ -108,6 +108,8 @@ for testcase in range(1, T+1):
             if possibleOrNot:
                 ans += "{} ".format(r)
                 break            
-            
-
-    print("Case #{}: {}".format(testcase, ans[:len(ans)]))
+    if testcase == T+1:
+        print("Case #{}: {}".format(testcase, ans.rstrip()), end=None)
+    else:
+        print("Case #{}: {}".format(testcase, ans.rstrip()))
+    
