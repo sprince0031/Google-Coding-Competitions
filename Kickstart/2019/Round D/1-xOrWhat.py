@@ -92,13 +92,28 @@ for testcase in range(1, T+1):
     N, Q = map(int, input().split())
     A = list(map(int, input().split()))
     ans = ''
+    pascalRow = generatePascalTriangleRow(N)
+    # print(pascalRow)
     for modfication in range(0, Q):
         Pi, Vi = map(int, input().split())
         A[Pi] = Vi
-        pascalRow = generatePascalTriangleRow(N)
-        for possibilities in pascalRow:
-            for possibility in range(1, possibilities+1):
-                pass # have to complete 
+        tempN = N
+        breakFlag = 0
+        for numsToTakeOut in range(len(pascalRow)):
+            if numsToTakeOut == 0:
+                evenOrNot = countSetBitsAndReturnIfEven(xor_sum(A, N))
+                if evenOrNot is not -1:
+                    ans = "{} ".format(N)
+                    # breakFlag = 1
+                    break
+                else:
+                    tempN -= 1
+            else:
+                for possibility in range(0, pascalRow[numsToTakeOut]):
+                    
+
+            if breakFlag == 1:
+                break
         # numberOfWindows, flag = 1, 0
         # for windowSize in range(N, 0, -1):
         #     for window in range(0, numberOfWindows):
